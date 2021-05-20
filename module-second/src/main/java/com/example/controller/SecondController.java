@@ -43,7 +43,6 @@ public class SecondController {
         String result = secondService.sendThird();
         log.info(">>> second-point .... {} ", result);
         return ResponseEntity.ok().body(result);
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/error")

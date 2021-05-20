@@ -28,7 +28,6 @@ public class ThirdController {
         String result = thirdService.ping();
         log.info(">>> third-point .... {} ", result);
         return ResponseEntity.ok().body(result);
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @PostMapping("/ping")
