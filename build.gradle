@@ -37,9 +37,6 @@ subprojects {
         }
         implementation 'org.springframework.boot:spring-boot-starter-web'
 
-        // Spring Cloud Sleuth
-//        implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '2.2.4.RELEASE'
-
         // zipkin (Sleuth & Zipkin)
         implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.2.4.RELEASE'
 
