@@ -46,11 +46,4 @@ public class ThirdController {
         thirdService.createError();
     }
 
-    @GetMapping("/baggage")
-    public void baggage() {
-        log.info(">>> third-point .... ");
-        thirdService.findBaggage();
-        log.info(">>> third-point end");
-    }
-
 }
