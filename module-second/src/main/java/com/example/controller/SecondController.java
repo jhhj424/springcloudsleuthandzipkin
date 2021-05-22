@@ -51,11 +51,4 @@ public class SecondController {
         secondService.createError();
     }
 
-    @GetMapping("/baggage")
-    public void baggage() {
-        log.info(">>> second-point .... ");
-        secondService.findBaggage();
-        log.info(">>> second-point end");
-    }
-
 }

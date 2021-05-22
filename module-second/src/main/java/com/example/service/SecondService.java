@@ -44,14 +44,4 @@ public class SecondService {
         return "error!";
     }
 
-    public void findBaggage() {
-        Span updatedSpan = tracer.currentSpan();
-        Long parentId = updatedSpan.context().parentId();
-        log.info("parents Id : {}", parentId);
-        List<BaggageField> baggageFields = ExtraBaggageContext.getAllFields(updatedSpan.context());
-        for (BaggageField baggageField : baggageFields) {
-            log.info(">>> second span.. baggage : {} - {}",baggageField.name(), baggageField.getValue());
-        }
-    }
-
 }
