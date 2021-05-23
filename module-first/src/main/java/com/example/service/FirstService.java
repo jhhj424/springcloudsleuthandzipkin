@@ -56,7 +56,6 @@ public class FirstService {
 
         log.info(">>> new span start 3 ... ");
         response = restTemplate.getForObject(thirdUri + "/ping", String.class);
-//        response = restTemplate.getForObject(thirdUri + "/error", String.class);
         log.info(">>> from third-point .... response : {}", response);
 
         return "finish";
@@ -118,64 +117,5 @@ public class FirstService {
         span.tag("firstTag", "hello world");
         span.tag("secondTag", "sleuth example");
         restTemplate.getForObject(secondUri + "/ping", String.class);
-    }
-
-    public void addBaggage(String baggage) {
-        log.info(">>> first service ... ");
-        log.info(">>> client baggage : {}", baggage);
-
-        for (BaggageField baggageField : ExtraBaggageContext.getAllFields(tracer.currentSpan().context())) {
-            log.info(">>> baggage : {} - {}",baggageField.name(), baggageField.getValue());
-        }
-
-        Tracing tracing = Tracing.newBuilder().currentTraceContext(Tracing.current().currentTraceContext()).propagationFactory(
-                BaggagePropagation.newFactoryBuilder(B3Propagation.FACTORY)
-                        .add(BaggagePropagationConfig.SingleBaggageField.remote(BaggageField.create("first-bag")))
-                        .add(BaggagePropagationConfig.SingleBaggageField.newBuilder(BaggageField.create("second-bag")).addKeyName("SECOND_KEY").build())
-                        .add(BaggagePropagationConfig.SingleBaggageField.local(BaggageField.create("user-local")))
-                        .add(BaggagePropagationConfig.SingleBaggageField.remote(BaggageField.create("x-vcap-request-id")))
-                        .build()
-        ).build();
-
-
-        Span updatedSpan = tracing.tracer().currentSpan();
-        List<BaggageField> baggageFields = ExtraBaggageContext.getAllFields(updatedSpan.context());
-        for (BaggageField baggageField : baggageFields) {
-            log.info(">>> baggage : {} - {}",baggageField.name(), baggageField.getValue());
-        }
-
-        restTemplate.getForObject(secondUri+"/baggage", Object.class);
-    }
-
-    public void sampler() {
-        log.info(">>> add sampler header!");
-        Span span = tracer.currentSpan();
-
-        SamplerFunction<Boolean> samplerFunction = new SamplerFunction() {
-            @Override
-            public Boolean trySample(Object arg) {
-                return (boolean) arg;
-            }
-        };
-
-
-        // Span nextSpan = tracer.nextSpanWithParent(samplerFunction, false, span.context());
-        ScopedSpan nextSpan = tracer.startScopedSpan("my new span", new SamplerFunction() {
-            @Override
-            public Boolean trySample(Object arg) {
-                return (boolean) arg;
-            }
-        }, false);
-
-        log.info(">>> next span {} ", nextSpan.context().spanIdString());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.set("X-B3-Sampled", "0");
-        httpHeaders.set("test", "hello world!");
-
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(httpHeaders);
-        ResponseEntity<String> result = restTemplate.postForEntity(secondUri+"/ping", request, String.class);
-        log.info(">>> first service ... ping result : {} ", result.getBody());
     }
 }

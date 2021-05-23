@@ -62,19 +62,4 @@ public class FirstController {
         return ResponseEntity.ok().body(REQUEST_SUCCESS);
     }
 
-    @GetMapping("/add_baggage")
-    public ResponseEntity<String> addBaggage(@RequestParam String baggage){
-        log.info(">>> add baggage request start ... ");
-        firstService.addBaggage(baggage);
-        log.info(">>> add baggage request end ... ");
-        return ResponseEntity.ok().body(REQUEST_SUCCESS);
-    }
-
-    @GetMapping("/sampling")
-    public ResponseEntity<String> sampling() {
-        log.info(">>> root span");
-        firstService.sampler();
-        return ResponseEntity.ok().body(REQUEST_SUCCESS);
-    }
-
 }
