@@ -32,3 +32,16 @@ MSA 구조에서는 하나의 HTTP 호출이 내부적으로 여러개의 서비
 B3 propagation은 간단히 말해 ‘X-B3-‘으로 시작하는 X-B3-TraceId와 X-B3-ParentSpanId, X-B3-SpanId, X-B3-Sampled, 이 4개 값을 전달하는 것을 통해서 트레이스 정보를 관리합니다. 서버에서는 이 값들을 TraceContext에서 관리하는데, Spring 프레임워크와 SLF4J(Simple Logging Facade for Java)를 사용하면 MDC(Mapped Diagnostic Context)에서 해당 값을 꺼내서 사용할 수 있습니다. HTTP를 통해 다른 서버로 전달하는 경우에는 HTTP 헤더를 통해서 전달하고, Kafka 메시지를 통해 전달하는 경우에는 Kafka 헤더를 통해서 전달합니다.
 
 참고 링크 : https://www.youtube.com/
+
+## [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth)
+
+MSA환경에서 클라이언트의 호출은 내부적으로 여러 마이크로서비스를 거쳐서 일어나기 때문에 추적이 어렵다. 때문에 이를 추적하기 위해서는 연관된 ID가 필요한데, 이런 ID를 자동으로 생성해주는 것이 **Spring Cloud Sleuth**이다.
+
+Spring Cloud Sleuth는 Spring에서 공식적으로 지원하는 Zipkin Client Library로 Spring과의 연동이 매우 쉬우며, 호출되는 서비스에 Trace(추적) ID와 Span(구간) ID를 부여한다. Trace ID는 클라이언트 호출의 시작부터 끝날때까지 동일한 ID로 처리되며, Span ID는 마이크로서비스당 1개의 ID가 부여된다. 이 두 ID를 활용하면 클라이언트 호출을 쉽게 추적할 수 있다.
+
+TraceId, SpanId를 생성하면 이러한 정보를 서비스 호출을 위한 헤더나 MDC(Mapped Diagnostic Context)에 추가한다. 이는 Zipkin이나 ELK 같은 도구에서 인덱스나 프로세스 로그 파일을 저장하기 위해서 사용된다. **Spring Cloud 제품군의 CLASSPATH에 추가되면 다음과 같은 공통 커뮤니케이션 채널에 자동으로 통합된다.**
+
+- RestTemplate 등에 의한 request
+- Netfix Zuul microproxy를 통과하는 request
+- Spring MVC 컨트롤러에서 수신된 HTTP header
+- Apache Kafka나 RabbitMQ와 같은 메세징 기술을 통한 request
