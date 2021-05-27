@@ -45,3 +45,13 @@ TraceId, SpanId를 생성하면 이러한 정보를 서비스 호출을 위한 �
 - Netfix Zuul microproxy를 통과하는 request
 - Spring MVC 컨트롤러에서 수신된 HTTP header
 - Apache Kafka나 RabbitMQ와 같은 메세징 기술을 통한 request
+
+Spring Sleuth는 HTTP request가 들어오는 시점과 HTTP request가 다른 서비스로 나가는 부분을 랩핑하여 Trace와 Span Context를 전달하고, 자바 애플리케이션에서는 Thread Local 변수를 통해서 정보를 유지 및 전달한다.
+
+위의 그림과 같이 x-b3로 시작하는 헤더들과 x-span-name 등을 이용하여 컨택스트를 전달한다.
+
+HTTP로 들어오는 요청의 경우에는 Servlet filter를 이용하여, Trace Id와 Span Id를 받고 (만약에 이 서비스가 맨 처음 호출되는 서비스라서 Trace Id와 Span Id가 없을 경우에는 이를 생성한다.)
+
+RestTemplate을 통해 다른 서비스로 호출을 할 경우에는 RestTemplate 을 랩핑하여, Trace Id와 Span Id와 같은 Context 정보를 실어서 보낸다.
+
+이렇게 ServletFilter와 RestTemplate을 Spring 프레임웍단에서 랩핑해줌으로써, 개발자는 별도의 트레이스 코드를 넣을 필요 없이 Spring을 이용한다면 분산 트랜잭션을 추적할 수 있도록 해준다.
