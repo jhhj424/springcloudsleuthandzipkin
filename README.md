@@ -55,3 +55,17 @@ HTTP로 들어오는 요청의 경우에는 Servlet filter를 이용하여, Trac
 RestTemplate을 통해 다른 서비스로 호출을 할 경우에는 RestTemplate 을 랩핑하여, Trace Id와 Span Id와 같은 Context 정보를 실어서 보낸다.
 
 이렇게 ServletFilter와 RestTemplate을 Spring 프레임웍단에서 랩핑해줌으로써, 개발자는 별도의 트레이스 코드를 넣을 필요 없이 Spring을 이용한다면 분산 트랜잭션을 추적할 수 있도록 해준다.
+
+## [Brave](https://github.com/openzipkin/brave)
+
+**B3-Propagation 의 java 구현체로 트레이스 정보를 관리할 수 있음**
+
+Spring Cloud Slueth 2.0.0 버전부터는 Brave 라이브러리를 사용한다.
+
+대부분의 경우 Slueth가 제공하는 Brave의 Tracer 또는 SpanCustomizer Bean만 사용하면 된다.
+
+Brave는 분산 작업에 대한 정보를 캡쳐하고 Zipkin에게 보낼때 사용하는 라이브러리이다.
+
+대부분의 경우 Brave를 직접 사용하지 않는다.
+
+- brave.tracer: Zipkin에게 분산 데이터를 보내는 역할을 한다.
