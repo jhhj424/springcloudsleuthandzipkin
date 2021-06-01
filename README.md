@@ -69,3 +69,13 @@ Brave는 분산 작업에 대한 정보를 캡쳐하고 Zipkin에게 보낼때 �
 대부분의 경우 Brave를 직접 사용하지 않는다.
 
 - brave.tracer: Zipkin에게 분산 데이터를 보내는 역할을 한다.
+
+## Slf4j + Logback
+
+Slf4j MDC는 자동 설정된다.
+
+기본값으로는 logging.pattern.level를 %5p,
+
+`[${spring.zipkin.service.name:${spring.application.name:-}},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]`으로 설정한다. (이는 logback 사용자를 위한 스프링 부트가 제공하는 기능이다.)
+
+Slf4j를 사용하지 않는다면 위 패턴은 자동으로 적용되지 않는다.
