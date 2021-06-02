@@ -79,3 +79,16 @@ Slf4j MDC는 자동 설정된다.
 `[${spring.zipkin.service.name:${spring.application.name:-}},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]`으로 설정한다. (이는 logback 사용자를 위한 스프링 부트가 제공하는 기능이다.)
 
 Slf4j를 사용하지 않는다면 위 패턴은 자동으로 적용되지 않는다.
+
+## [Zipkin](https://zipkin.io/)
+
+- 트위터에서 개발된 오픈소스
+- 추적 가능한 분산 트랜잭션: HTTP, gRPC ..
+
+분산 환경에서 로그 트레이싱을 하는 오픈소스로 trace를 수집하고 저장, 조회를 모두 관리한다.
+
+수집한 trace를 분석하여 **예상대로 수행되지않는 구성 요소를 결정하고 수정할 수 있다.**
+
+Zipkin 라이브러리는 수집된 트랜잭션 정보를 zipkin 서버의 collector 모듈로 전송한다. 이 때 다양한 프로토콜을 사용할 수 있는데, 일반적으로 HTTP를 사용하고, 시스템의 규모가 클 경우에는 Kafka 큐를 넣어서 Kafka 프로토콜로 전송이 가능함
+
+수집된 정보는 대쉬 보드를 이용하여 시각화가 가능하다. Zipkin 서버의 대쉬보드([http://localhost:9411/zipkin/](http://localhost:9411/zipkin/))를 사용할 수 있고, Elastic Search 백앤드를 이용한 경우에는 Kibana를 이용하여 시각화가 가능하다.
