@@ -92,3 +92,15 @@ Slf4j를 사용하지 않는다면 위 패턴은 자동으로 적용되지 않�
 Zipkin 라이브러리는 수집된 트랜잭션 정보를 zipkin 서버의 collector 모듈로 전송한다. 이 때 다양한 프로토콜을 사용할 수 있는데, 일반적으로 HTTP를 사용하고, 시스템의 규모가 클 경우에는 Kafka 큐를 넣어서 Kafka 프로토콜로 전송이 가능함
 
 수집된 정보는 대쉬 보드를 이용하여 시각화가 가능하다. Zipkin 서버의 대쉬보드([http://localhost:9411/zipkin/](http://localhost:9411/zipkin/))를 사용할 수 있고, Elastic Search 백앤드를 이용한 경우에는 Kibana를 이용하여 시각화가 가능하다.
+
+- **Zipkin 구성요소**
+
+  **1. Zipkin Client Library** : 서비스에서 트레이스 정보를 수집하여 Zipkin Server의 Collector 모듈로 전송하며, 지원하는 언어는 Java, Javascript, Go, C# 등이 있다. Collector로 전송할 때는 다양한 프로토콜을 사용할 수 있지만 일반적으로 HTTP를 사용하고, 시스템이 클 경우 Kafka 큐를 통해서도 전송을 한다.
+
+  **2. Collector** : Zipkin Client Library로부터 전달된 트레이스 정보 유효성을 검증하고 검색 가능하게 저장 및 색인화 한다.
+
+  **3. Storage** : Zkipkin Collector로 보내진 트레이스 정보는 Storage에 저장된다. Zipkin은 초창기에는 Cassandra에 데이터를 저장하도록 만들어졌지만(Cassandra가 확장 가능하고 유연한 스키마를 가지고 있기 때문에 Twitter 내에서 많이 사용되었음), 그 뒤로 ElasticSearch나 MySQL도 지원 가능하게 구성되었다. 그 외에 In-Memory도 지원 가능하기 때문에 간단히 로컬에서 테스트할 때는 In-Memory, 소규모는 MySQL, 운영환경에 적용은 Cassandra나 ElasticSearch를 저장소로 사용하는 것이 좋다.
+
+  **4. API(Zipkin Query Service)** : 저장되고 색인화된 트레이스 정보를 검색하기 위한 JSON API이며, 주로 Web UI에서 호출된다.
+
+  **5. Web UI** : 수집된 트레이스 정보를 확인할 수 있는 GUI로 만들어진 대쉬보드이며, 서비스 / 시간 / 어노테이션 기반으로 데이터 확인이 가능하다. Zipkin 서버의 대쉬보드를 사용할 수도 있고, ElasticSearch 백앤드를 이용한 경우는 Kibana 활용도 가능하다.
