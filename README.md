@@ -104,3 +104,13 @@ Zipkin 라이브러리는 수집된 트랜잭션 정보를 zipkin 서버의 coll
   **4. API(Zipkin Query Service)** : 저장되고 색인화된 트레이스 정보를 검색하기 위한 JSON API이며, 주로 Web UI에서 호출된다.
 
   **5. Web UI** : 수집된 트레이스 정보를 확인할 수 있는 GUI로 만들어진 대쉬보드이며, 서비스 / 시간 / 어노테이션 기반으로 데이터 확인이 가능하다. Zipkin 서버의 대쉬보드를 사용할 수도 있고, ElasticSearch 백앤드를 이용한 경우는 Kibana 활용도 가능하다.
+
+- **주의사항**
+
+  zipkin 서버를 통해서 HTTP로 Trace 로그를 받을때, 별도의 보안이나 인증 메커니즘이 없기 때문에, zipkin 서버는 반드시 방화벽 안에 놓고, 서비스 서버로부터만 HTTP 호출을 받을 수 있도록 해야 한다.
+
+- **설치**
+
+  curl -sSL [https://zipkin.io/quickstart.sh](https://zipkin.io/quickstart.sh) | bash -s
+
+  **실행**: java -jar zipkin.jar
