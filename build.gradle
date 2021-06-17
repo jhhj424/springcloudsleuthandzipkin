@@ -36,8 +36,6 @@ subprojects {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
         implementation 'org.springframework.boot:spring-boot-starter-web'
-
-        // zipkin (Sleuth & Zipkin)
         implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.2.4.RELEASE'
 
     }
